@@ -1,3 +1,4 @@
+
 # Web UI Testing Framework
 
 A robust Web UI testing framework built with **Cucumber**, **Java**, **Gradle**, and **Selenium**. It follows the **Page Object Model (POM)** and uses **Gherkin** syntax for test case definitions. The framework includes sample tests for login functionality on [the-internet.herokuapp.com/login](https://the-internet.herokuapp.com/login).
@@ -71,15 +72,11 @@ Ensure the following tools are installed:
 ---
 
 ## ▶️ Running the Tests
-
 ### Clone the repository:
-```bash
 git clone https://github.com/your-username/web-ui-testing-framework.git
 cd web-ui-testing-framework
 ### To run all tests:
-```bash
 gradle clean test
 ### To generate and open the Allure report:
 gradle allureReport
 open build/reports/allure-report/index.html
-
