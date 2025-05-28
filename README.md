@@ -67,3 +67,13 @@ Ensure the following tools are installed:
   _Check: `git --version`_
 - **Visual Studio Code** (optional): Recommended for development
 - **Internet Connection**: Required to access [the-internet.herokuapp.com](https://the-internet.herokuapp.com/login)
+
+---
+
+## ▶️ Running the Tests
+
+### Clone the repository:
+```bash
+git clone https://github.com/your-username/web-ui-testing-framework.git
+cd web-ui-testing-framework
+
