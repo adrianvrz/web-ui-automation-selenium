@@ -76,4 +76,10 @@ Ensure the following tools are installed:
 ```bash
 git clone https://github.com/your-username/web-ui-testing-framework.git
 cd web-ui-testing-framework
+### To run all tests:
+```bash
+gradle clean test
+### To generate and open the Allure report:
+gradle allureReport
+open build/reports/allure-report/index.html
 
