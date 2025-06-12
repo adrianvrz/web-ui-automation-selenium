@@ -21,7 +21,6 @@ public class LoginSteps {
 
     @Before
     public void setUp() {
-        //Inisialisasi Browser Driver (Chrome driver, Gecko driver, etc.)
         String browser = System.getProperty("browser", "chrome").toLowerCase();
         switch (browser) {
             case "firefox":
@@ -54,17 +53,50 @@ public class LoginSteps {
         loginPage = new LoginPage(driver);
     }
 
-    @When("I enter username {string} and password {string}")
-    public void i_enter_username_and_password(String username, String password) {
+    @Given("I have entered a valid username {string}")
+    public void i_have_entered_a_valid_username(String username) {
         loginPage.enterUsername(username);
+    }
+
+    @Given("I have entered a valid password {string}")
+    public void i_have_entered_a_valid_password(String password) {
         loginPage.enterPassword(password);
     }
 
-    @When("I enter a very long username and password {string}")
-    public void i_enter_a_very_long_username_and_password(String password) {
+    @Given("I have entered an invalid username {string}")
+    public void i_have_entered_an_invalid_username(String username) {
+        loginPage.enterUsername(username);
+    }
+
+    @Given("I have entered an invalid password {string}")
+    public void i_have_entered_an_invalid_password(String password) {
+        loginPage.enterPassword(password);
+    }
+
+    @Given("I leave the username field empty")
+    public void i_leave_the_username_field_empty() {
+        loginPage.enterUsername("");
+    }
+
+    @Given("I leave the password field empty")
+    public void i_leave_the_password_field_empty() {
+        loginPage.enterPassword("");
+    }
+
+    @Given("I enter a very long username")
+    public void i_enter_a_very_long_username() {
         String longUsername = "a".repeat(1000);
         loginPage.enterUsername(longUsername);
+    }
+
+    @Given("I enter the password {string}")
+    public void i_enter_the_password(String password) {
         loginPage.enterPassword(password);
+    }
+
+    @Given("I enter the valid username {string}")
+    public void i_enter_the_valid_username(String username) {
+        loginPage.enterUsername(username);
     }
 
     @When("I click the login button")
@@ -72,16 +104,16 @@ public class LoginSteps {
         loginPage.clickLoginButton();
     }
 
-    @Then("I should see a success message")
-    public void i_should_see_a_success_message() {
+    @Then("I should see a success message containing {string}")
+    public void i_should_see_a_success_message_containing(String expectedMessage) {
         securePage = new SecurePage(driver);
         String message = securePage.getSuccessMessage();
-        Assert.assertTrue(message.contains("You logged into a secure area!"));
+        Assert.assertTrue("Success message does not contain: " + expectedMessage, message.contains(expectedMessage));
     }
 
     @Then("I should see an error message containing {string}")
     public void i_should_see_an_error_message_containing(String expectedError) {
         String actualError = loginPage.getErrorMessage();
-        Assert.assertTrue(actualError.contains(expectedError));
+        Assert.assertTrue("Error message does not contain: " + expectedError, actualError.contains(expectedError));
     }
 }
