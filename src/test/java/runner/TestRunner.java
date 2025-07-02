@@ -12,8 +12,7 @@ import org.junit.runner.RunWith;
         plugin = {
                 "pretty",
                 "html:build/reports/cucumber.html",
-                "json:build/reports/cucumber.json",
-                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
+                "json:build/reports/cucumber.json"
         },
         monochrome = true,
         tags = ""
