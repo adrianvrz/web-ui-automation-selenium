@@ -6,7 +6,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -104,16 +104,21 @@ public class LoginSteps {
         loginPage.clickLoginButton();
     }
 
+    @Then("I should see a success message")
+    public void i_should_see_a_success_message() {
+        securePage = new SecurePage(driver);
+        Assertions.assertTrue(securePage.getSuccessMessage().contains("You logged into a secure area!"));
+    }
+
     @Then("I should see a success message containing {string}")
     public void i_should_see_a_success_message_containing(String expectedMessage) {
         securePage = new SecurePage(driver);
         String message = securePage.getSuccessMessage();
-        Assert.assertTrue("Success message does not contain: " + expectedMessage, message.contains(expectedMessage));
+        Assertions.assertTrue(message.contains(expectedMessage), "Success message does not contain: " + expectedMessage);
     }
 
     @Then("I should see an error message containing {string}")
     public void i_should_see_an_error_message_containing(String expectedError) {
-        String actualError = loginPage.getErrorMessage();
-        Assert.assertTrue("Error message does not contain: " + expectedError, actualError.contains(expectedError));
+        Assertions.assertTrue(loginPage.getErrorMessage().contains(expectedError));
     }
 }
