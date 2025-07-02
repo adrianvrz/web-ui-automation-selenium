@@ -10,20 +10,15 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Build') {
+        stage('Build & Test') {
             steps {
-                sh './gradlew build'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh './gradlew test'
+                sh './gradlew clean build'
             }
         }
     }
     post {
         always {
-            junit 'build/test-results/**/*.xml'
+            junit 'build/test-results/test/cucumber.xml'
         }
     }
 }
