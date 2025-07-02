@@ -104,6 +104,12 @@ public class LoginSteps {
         loginPage.clickLoginButton();
     }
 
+    @Then("I should see a success message")
+    public void i_should_see_a_success_message() {
+        securePage = new SecurePage(driver);
+        Assertions.assertTrue(securePage.getSuccessMessage().contains("You logged into a secure area!"));
+    }
+
     @Then("I should see a success message containing {string}")
     public void i_should_see_a_success_message_containing(String expectedMessage) {
         securePage = new SecurePage(driver);
@@ -113,7 +119,6 @@ public class LoginSteps {
 
     @Then("I should see an error message containing {string}")
     public void i_should_see_an_error_message_containing(String expectedError) {
-        String actualError = loginPage.getErrorMessage();
-        Assertions.assertTrue(actualError.contains(expectedError), "Error message does not contain: " + expectedError);
+        Assertions.assertTrue(loginPage.getErrorMessage().contains(expectedError));
     }
 }
