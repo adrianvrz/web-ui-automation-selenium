@@ -10,49 +10,47 @@ repositories {
 }
 
 dependencies {
-    // JUnit 4 (requerido para @RunWith)
+    // JUnit 4 (necesario para @RunWith en TestRunner)
     testImplementation 'junit:junit:4.13.2'
     
-    // JUnit 5 (requerido para Assertions)
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
-    
-    // Cucumber dependencies
+    // Cucumber dependencies para JUnit 4
     testImplementation 'io.cucumber:cucumber-java:7.18.1'
     testImplementation 'io.cucumber:cucumber-junit:7.18.1'
-    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.18.1'
-    
+
     // Selenium
-    implementation 'org.seleniumhq.selenium:selenium-java:4.32.0'
-    implementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.22.0'
+    implementation 'io.github.bonigarcia:webdrivermanager:5.9.1'
 }
 
 test {
-    useJUnitPlatform()
-    testLogging { events "passed", "skipped", "failed" }
-    
-    // Configuración para tags de Cucumber
+    useJUnit()
+    testLogging { 
+        events "passed", "skipped", "failed"
+        showStandardStreams = false
+        showStackTraces = false
+        showCauses = false
+        exceptionFormat = 'short'
+    }
+
+    // Propiedades del sistema para pasar parámetros a las pruebas
     systemProperty 'cucumber.filter.tags', System.getProperty('tags', '@Regression')
     systemProperty 'browser', System.getProperty('browser', 'chrome')
     systemProperty 'headless', System.getProperty('headless', 'true')
+    
+    // Desactivar colores ANSI para output limpio
+    systemProperty 'cucumber.ansi-colors.disabled', 'true'
+    
+    // Configurar reportes de Cucumber
+    systemProperty 'cucumber.plugin', 'html:build/reports/cucumber.html,json:build/reports/cucumber.json,junit:build/test-results/test/cucumber.xml'
 }
 
-// Agregar task personalizada para Cucumber
-task cucumber() {
-    dependsOn assemble, compileTestJava
-    doLast {
-        javaexec {
-            main = "io.cucumber.core.cli.Main"
-            classpath = configurations.runtimeClasspath + configurations.testRuntimeClasspath + sourceSets.test.output
-            args = [
-                '--plugin', 'pretty',
-                '--plugin', 'html:build/reports/cucumber.html',
-                '--plugin', 'json:build/reports/cucumber.json',
-                '--plugin', 'junit:build/test-results/test/cucumber.xml',
-                '--glue', 'steps',
-                'src/test/resources/features'
-            ]
-        }
-    }
+// Tarea personalizada para ejecutar solo Cucumber
+task cucumber(type: Test) {
+    useJUnit()
+    include '**/TestRunner.class'
+    systemProperty 'cucumber.plugin', 'pretty,html:build/reports/cucumber.html,json:build/reports/cucumber.json,junit:build/test-results/test/cucumber.xml'
+    systemProperty 'cucumber.filter.tags', System.getProperty('tags', '@Regression')
+    systemProperty 'browser', System.getProperty('browser', 'chrome')
+    systemProperty 'headless', System.getProperty('headless', 'true')
+    systemProperty 'cucumber.ansi-colors.disabled', 'true'
 }
-
