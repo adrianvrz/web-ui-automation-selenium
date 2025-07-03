@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '2.11.2'
 }
 
 group = 'org.example'
@@ -16,6 +17,7 @@ dependencies {
     // Cucumber dependencies para JUnit 4
     testImplementation 'io.cucumber:cucumber-java:7.18.1'
     testImplementation 'io.cucumber:cucumber-junit:7.18.1'
+    testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.24.0'
 
     // Selenium
     implementation 'org.seleniumhq.selenium:selenium-java:4.22.0'
@@ -53,4 +55,15 @@ task cucumber(type: Test) {
     systemProperty 'browser', System.getProperty('browser', 'chrome')
     systemProperty 'headless', System.getProperty('headless', 'true')
     systemProperty 'cucumber.ansi-colors.disabled', 'true'
+}
+
+allure {
+    adapter {
+        aspectjWeaver.set(true)
+        frameworks {
+            cucumber7 {
+                adapterVersion.set('2.34.1')
+            }
+        }
+    }
 }

@@ -9,12 +9,11 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = "steps",
         plugin = {
-                "pretty:build/reports/cucumber-pretty.txt",  // Sin colores
-                "html:build/reports/cucumber.html",
-                "json:build/reports/cucumber.json",
+                "pretty",
+                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
                 "junit:build/test-results/test/cucumber.xml"
         },
-        monochrome = true,  // Importante: esto desactiva colores
+        monochrome = true,
         tags = "@Regression"
 )
 public class TestRunner {
