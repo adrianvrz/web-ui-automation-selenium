@@ -10,14 +10,44 @@ repositories {
 }
 
 dependencies {
+    // JUnit 4 (requerido para @RunWith)
     testImplementation 'junit:junit:4.13.2'
+    
+    // JUnit 5 (requerido para Assertions)
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    
+    // Cucumber dependencies
     testImplementation 'io.cucumber:cucumber-java:7.18.1'
     testImplementation 'io.cucumber:cucumber-junit:7.18.1'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.18.1'
+    
+    // Selenium
     implementation 'org.seleniumhq.selenium:selenium-java:4.32.0'
     implementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
 }
 
 test {
-    useJUnit()
+    useJUnitPlatform()
     testLogging { events "passed", "skipped", "failed" }
 }
+
+// Agregar task personalizada para Cucumber
+task cucumber() {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.runtimeClasspath + configurations.testRuntimeClasspath + sourceSets.test.output
+            args = [
+                '--plugin', 'pretty',
+                '--plugin', 'html:build/reports/cucumber.html',
+                '--plugin', 'json:build/reports/cucumber.json',
+                '--plugin', 'junit:build/test-results/test/cucumber.xml',
+                '--glue', 'steps',
+                'src/test/resources/features'
+            ]
+        }
+    }
+}
+
