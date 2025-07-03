@@ -8,15 +8,15 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "steps",
-        tags = "@Regression",  // Asegurar que solo ejecute tests con @Regression
         plugin = {
                 "pretty",
                 "html:build/reports/cucumber.html",
                 "json:build/reports/cucumber.json",
                 "junit:build/test-results/test/cucumber.xml",
-                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"  // Si usas Allure
+                "message:build/reports/cucumber.ndjson"
         },
-        monochrome = true
+        monochrome = true,
+        tags = ""
 )
 public class LoginFunctionalityTests {
 }

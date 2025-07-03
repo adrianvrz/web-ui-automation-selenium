@@ -30,6 +30,11 @@ dependencies {
 test {
     useJUnitPlatform()
     testLogging { events "passed", "skipped", "failed" }
+    
+    // Configuración para tags de Cucumber
+    systemProperty 'cucumber.filter.tags', System.getProperty('tags', '@Regression')
+    systemProperty 'browser', System.getProperty('browser', 'chrome')
+    systemProperty 'headless', System.getProperty('headless', 'true')
 }
 
 // Agregar task personalizada para Cucumber
