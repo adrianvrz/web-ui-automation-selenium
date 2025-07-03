@@ -12,10 +12,11 @@ import org.junit.runner.RunWith;
                 "pretty",
                 "html:build/reports/cucumber.html",
                 "json:build/reports/cucumber.json",
-                "junit:build/test-results/test/cucumber.xml"
+                "junit:build/test-results/test/cucumber.xml",
+                "message:build/reports/cucumber.ndjson"
         },
         monochrome = true,
         tags = ""
 )
-public class TestRunner {
+public class LoginFunctionalityTests {
 }
