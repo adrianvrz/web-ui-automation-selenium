@@ -21,7 +21,3 @@ test {
     useJUnit()
     testLogging { events "passed", "skipped", "failed" }
 }
-
-tasks.withType(Test) {
-    systemProperties['cucumber.options'] = '--plugin pretty --plugin html:build/reports/cucumber.html'
-}
