@@ -6,11 +6,14 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.Assertions;
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import pages.LoginPage;
 import pages.SecurePage;
 
@@ -22,19 +25,37 @@ public class LoginSteps {
     @Before
     public void setUp() {
         String browser = System.getProperty("browser", "chrome").toLowerCase();
+        boolean headless = Boolean.parseBoolean(System.getProperty("headless", "true"));
+        
         switch (browser) {
             case "firefox":
                 WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                if (headless) {
+                    firefoxOptions.addArguments("--headless");
+                }
+                driver = new FirefoxDriver(firefoxOptions);
                 break;
             case "edge":
                 WebDriverManager.edgedriver().setup();
-                driver = new EdgeDriver();
+                EdgeOptions edgeOptions = new EdgeOptions();
+                if (headless) {
+                    edgeOptions.addArguments("--headless");
+                }
+                driver = new EdgeDriver(edgeOptions);
                 break;
             case "chrome":
             default:
                 WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
+                ChromeOptions chromeOptions = new ChromeOptions();
+                if (headless) {
+                    chromeOptions.addArguments("--headless");
+                    chromeOptions.addArguments("--no-sandbox");
+                    chromeOptions.addArguments("--disable-dev-shm-usage");
+                    chromeOptions.addArguments("--disable-gpu");
+                    chromeOptions.addArguments("--window-size=1920,1080");
+                }
+                driver = new ChromeDriver(chromeOptions);
                 break;
         }
         driver.manage().window().maximize();
@@ -107,18 +128,18 @@ public class LoginSteps {
     @Then("I should see a success message")
     public void i_should_see_a_success_message() {
         securePage = new SecurePage(driver);
-        Assertions.assertTrue(securePage.getSuccessMessage().contains("You logged into a secure area!"));
+        Assert.assertTrue(securePage.getSuccessMessage().contains("You logged into a secure area!"));
     }
 
     @Then("I should see a success message containing {string}")
     public void i_should_see_a_success_message_containing(String expectedMessage) {
         securePage = new SecurePage(driver);
         String message = securePage.getSuccessMessage();
-        Assertions.assertTrue(message.contains(expectedMessage), "Success message does not contain: " + expectedMessage);
+        Assert.assertTrue("Success message does not contain: " + expectedMessage, message.contains(expectedMessage));
     }
 
     @Then("I should see an error message containing {string}")
     public void i_should_see_an_error_message_containing(String expectedError) {
-        Assertions.assertTrue(loginPage.getErrorMessage().contains(expectedError));
+        Assert.assertTrue("Error message does not contain: " + expectedError, loginPage.getErrorMessage().contains(expectedError));
     }
 }
