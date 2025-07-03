@@ -22,8 +22,17 @@ pipeline {
     
     post {
         always {
+            // Publicar resultados JUnit
+            junit 'build/test-results/**/*.xml'
+            
+            // Publicar Allure Report
             allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
-            junit 'build/test-results/test/cucumber.xml'
+        }
+        success {
+            echo 'All tests passed successfully!'
+        }
+        failure {
+            echo 'Some tests failed. Check the reports for details.'
         }
     }
 }

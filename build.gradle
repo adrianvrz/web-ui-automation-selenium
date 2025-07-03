@@ -17,11 +17,24 @@ dependencies {
     // Cucumber dependencies para JUnit 4
     testImplementation 'io.cucumber:cucumber-java:7.18.1'
     testImplementation 'io.cucumber:cucumber-junit:7.18.1'
+    
+    // Allure
     testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.24.0'
 
     // Selenium
     implementation 'org.seleniumhq.selenium:selenium-java:4.22.0'
     implementation 'io.github.bonigarcia:webdrivermanager:5.9.1'
+}
+
+allure {
+    adapter {
+        aspectjWeaver.set(true)
+        frameworks {
+            cucumber7 {
+                adapterVersion.set('2.24.0')
+            }
+        }
+    }
 }
 
 test {
@@ -34,36 +47,23 @@ test {
         exceptionFormat = 'short'
     }
 
-    // Propiedades del sistema para pasar parámetros a las pruebas
     systemProperty 'cucumber.filter.tags', System.getProperty('tags', '@Regression')
     systemProperty 'browser', System.getProperty('browser', 'chrome')
     systemProperty 'headless', System.getProperty('headless', 'true')
-    
-    // Desactivar colores ANSI para output limpio
     systemProperty 'cucumber.ansi-colors.disabled', 'true'
-    
-    // Configurar reportes de Cucumber
-    systemProperty 'cucumber.plugin', 'html:build/reports/cucumber.html,json:build/reports/cucumber.json,junit:build/test-results/test/cucumber.xml'
 }
 
-// Tarea personalizada para ejecutar solo Cucumber
+// Tarea cucumber con Allure
 task cucumber(type: Test) {
     useJUnit()
     include '**/TestRunner.class'
-    systemProperty 'cucumber.plugin', 'pretty,html:build/reports/cucumber.html,json:build/reports/cucumber.json,junit:build/test-results/test/cucumber.xml'
+    systemProperty 'cucumber.plugin', [
+        'pretty',
+        'io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm',
+        'junit:build/test-results/test/cucumber.xml'
+    ].join(',')
     systemProperty 'cucumber.filter.tags', System.getProperty('tags', '@Regression')
     systemProperty 'browser', System.getProperty('browser', 'chrome')
     systemProperty 'headless', System.getProperty('headless', 'true')
     systemProperty 'cucumber.ansi-colors.disabled', 'true'
-}
-
-allure {
-    adapter {
-        aspectjWeaver.set(true)
-        frameworks {
-            cucumber7 {
-                adapterVersion.set('2.34.1')
-            }
-        }
-    }
 }
