@@ -60,7 +60,7 @@ jobs:
       
     - name: 🦊 Setup Firefox Browser
       if: matrix.browser == 'firefox' || github.event.inputs.browser == 'firefox'
-      uses: browser-actions/setup-firefox@v1.5.2
+      uses: browser-actions/setup-firefox@v1.5.3
       
     - name: 🌐 Setup Edge Browser
       if: matrix.browser == 'edge' || github.event.inputs.browser == 'edge'
