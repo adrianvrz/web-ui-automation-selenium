@@ -61,10 +61,6 @@ jobs:
     - name: 🦊 Setup Firefox Browser
       if: matrix.browser == 'firefox' || github.event.inputs.browser == 'firefox'
       uses: browser-actions/setup-firefox@v1.5.3
-      
-    - name: 🌐 Setup Edge Browser
-      if: matrix.browser == 'edge' || github.event.inputs.browser == 'edge'
-      uses: browser-actions/setup-edge@v1
 
     - name: 📋 Cache Gradle Dependencies
       uses: actions/cache@v4
