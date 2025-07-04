@@ -64,7 +64,7 @@ jobs:
       
     - name: 🌐 Setup Edge Browser
       if: matrix.browser == 'edge' || github.event.inputs.browser == 'edge'
-      uses: browser-actions/setup-edge@v1.2.2
+      uses: browser-actions/setup-edge@v1
 
     - name: 📋 Cache Gradle Dependencies
       uses: actions/cache@v4
